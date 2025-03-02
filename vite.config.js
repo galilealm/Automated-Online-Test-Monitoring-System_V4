@@ -10,4 +10,8 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: "./src/setupTests.js",
   },
+  build: {
+    outDir: "docs", // Set output directory to docs/ for GitHub Pages deployment
+  },
+  base: "./", // Ensures correct asset loading on GitHub Pages
 });
