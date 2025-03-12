@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Webcam } from "../utils/webcam";
 import { sendEmail } from "../utils/emailService"; // Importation du service d'envoi d'email
 
-const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionActive }) => {
+const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionActive, summary }) => {
   const [streaming, setStreaming] = useState(null);
   const inputImageRef = useRef(null);
   const inputVideoRef = useRef(null);
@@ -13,7 +13,7 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
   const [candidateEmail, setCandidateEmail] = useState("");
   const [sponsorEmail, setSponsorEmail] = useState("");
   const [sessionEnded, setSessionEnded] = useState(false);
-  const [summary, setSummary] = useState("");
+
 
   // Vérifier si la session est terminée et envoyer les résultats
   useEffect(() => {
@@ -49,10 +49,6 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
     setStreaming(null);
     toggleSession();
     setSessionEnded(true);
-
-    // Simulation des résultats (à remplacer par de vraies données)
-    const sessionResults = "Résumé de la session..."; 
-    setSummary(sessionResults);
   };
 
   // Validation et ouverture de la caméra après la saisie des emails

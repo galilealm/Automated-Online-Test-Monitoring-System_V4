@@ -5,6 +5,7 @@
 !src/utils/emailService.js
 !src/components/btn-handler.jsx
 !yarn.lock
+!src/App.jsx
 
 # Ignore node_modules
 node_modules
