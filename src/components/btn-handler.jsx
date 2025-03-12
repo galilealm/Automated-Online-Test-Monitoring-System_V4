@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Webcam } from "../utils/webcam";
-import { sendEmail } from "../utils/emailService"; // Importation du service d'envoi d'email
+import { sendEmail } from "../utils/emailService"; // Import the email sending service
 
 const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionActive, summary }) => {
   const [streaming, setStreaming] = useState(null);
@@ -8,22 +8,21 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
   const inputVideoRef = useRef(null);
   const webcam = new Webcam();
 
-  // États pour le formulaire de saisie des emails
+  // States for the email input form
   const [showModal, setShowModal] = useState(false);
   const [candidateEmail, setCandidateEmail] = useState("");
   const [sponsorEmail, setSponsorEmail] = useState("");
   const [sessionEnded, setSessionEnded] = useState(false);
 
-
-  // Vérifier si la session est terminée et envoyer les résultats
+  // Check if the session has ended and send the results
   useEffect(() => {
     if (sessionEnded && summary) {
-      console.log("Envoi du résumé :", summary);
+      console.log("Sending summary:", summary);
       sendEmail(summary, candidateEmail, sponsorEmail);
     }
   }, [summary, sessionEnded]);
 
-  // Fonction d'ouverture de la caméra frontale
+  // Function to open the front camera
   const openFrontCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -34,13 +33,13 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
       cameraRef.current.style.display = "block";
       setStreaming("frontCamera");
       toggleSession();
-      setSessionEnded(false); // La session commence
+      setSessionEnded(false); // The session starts
     } catch (error) {
-      alert("Erreur d'accès à la caméra : " + error.message);
+      alert("Error accessing the camera: " + error.message);
     }
   };
 
-  // Fonction de fermeture de la caméra frontale et d'envoi des emails
+  // Function to close the front camera and send emails
   const closeFrontCamera = () => {
     const tracks = cameraRef.current.srcObject?.getTracks();
     tracks?.forEach((track) => track.stop());
@@ -51,10 +50,10 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
     setSessionEnded(true);
   };
 
-  // Validation et ouverture de la caméra après la saisie des emails
+  // Validate and open the camera after entering the emails
   const handleStartSession = () => {
     if (!candidateEmail || !sponsorEmail) {
-      alert("Veuillez renseigner les adresses e-mail du candidat et du sponsor.");
+      alert("Please enter the candidate's and sponsor's email addresses.");
       return;
     }
     setShowModal(false);
@@ -72,30 +71,30 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
           }
         }}
       >
-        {streaming === "frontCamera" ? "Fermer la session" : "Démarrer la session"}
+        {streaming === "frontCamera" ? "Close the session" : "Start the session"}
       </button>
 
-      {/* Modal pour saisir les emails avant la session */}
+      {/* Modal to enter emails before the session */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Informations de la session</h2>
+            <h2>Session Information</h2>
             <input
               type="email"
-              placeholder="Email du candidat"
+              placeholder="Candidate's email"
               value={candidateEmail}
               onChange={(e) => setCandidateEmail(e.target.value)}
               required
             />
             <input
               type="email"
-              placeholder="Email du sponsor"
+              placeholder="Sponsor's email"
               value={sponsorEmail}
               onChange={(e) => setSponsorEmail(e.target.value)}
               required
             />
-            <button onClick={handleStartSession}>Démarrer la session</button>
-            <button onClick={() => setShowModal(false)}>Annuler</button>
+            <button onClick={handleStartSession}>Start the session</button>
+            <button onClick={() => setShowModal(false)}>Cancel</button>
           </div>
         </div>
       )}

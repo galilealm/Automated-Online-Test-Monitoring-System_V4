@@ -5,11 +5,9 @@ import Loader from "./components/loader";
 import ButtonHandler from "./components/btn-handler";
 import DetectUtils from "./utils/detect";
 
-
 const { detect, detectVideo, startLogging, getDetectionLogs } = DetectUtils;
 
 import "./style/App.css";
-
 
 const App = () => {
   const [loading, setLoading] = useState({ loading: true, progress: 0 });
@@ -83,8 +81,7 @@ const App = () => {
         }
 
         setSummary(prevSummary => `Session Summary: Real: ${realPercentage}%, Spoof: ${spoofPercentage}%, Duration: ${duration}`);
-        console.log("📊 Nouveau summary mis à jour dans App.jsx :", summary);
-
+        console.log("New summary updated in App.jsx:", summary);
 
       } else {
         setSummary(`No detections recorded. Duration: ${duration}`);
@@ -97,7 +94,7 @@ const App = () => {
       {loading.loading && (
         <Loader>
           <span className="loading-text">
-            Loading... Please wait. 🚀 {Math.round(loading.progress * 100)}%
+            Loading... Please wait. {Math.round(loading.progress * 100)}%
           </span>
         </Loader>
       )}
@@ -116,14 +113,14 @@ const App = () => {
           <canvas ref={canvasRef} width={model.inputShape[1]} height={model.inputShape[2]} />
         </div>
 
-        {/* ✅ Passer les résultats YOLO à `ButtonHandler` */}
+        {/* Pass YOLO results to `ButtonHandler` */}
         <ButtonHandler 
           imageRef={imageRef} 
           cameraRef={cameraRef} 
           videoRef={videoRef} 
           toggleSession={toggleSession} 
           sessionActive={sessionActive} 
-          summary={summary}  // ✅ Maintenant, ButtonHandler reçoit les résultats
+          summary={summary}  // Now, ButtonHandler receives the results
         />
 
         {summary && (
