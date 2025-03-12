@@ -1,75 +1,108 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Webcam } from "../utils/webcam";
+import { sendEmail } from "../utils/emailService"; // Importation du service d'envoi d'email
 
 const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionActive }) => {
-  const [streaming, setStreaming] = useState(null); // streaming state
-  const inputImageRef = useRef(null); // video input reference
-  const inputVideoRef = useRef(null); // video input reference
-  const webcam = new Webcam(); // webcam handler
+  const [streaming, setStreaming] = useState(null);
+  const inputImageRef = useRef(null);
+  const inputVideoRef = useRef(null);
+  const webcam = new Webcam();
 
-  // closing image
-  const closeImage = () => {
-    const url = imageRef.current.src;
-    imageRef.current.src = "#"; // restore image source
-    URL.revokeObjectURL(url); // revoke url
+  // États pour le formulaire de saisie des emails
+  const [showModal, setShowModal] = useState(false);
+  const [candidateEmail, setCandidateEmail] = useState("");
+  const [sponsorEmail, setSponsorEmail] = useState("");
+  const [sessionEnded, setSessionEnded] = useState(false);
+  const [summary, setSummary] = useState("");
 
-    setStreaming(null); // set streaming to null
-    inputImageRef.current.value = ""; // reset input image
-    imageRef.current.style.display = "none"; // hide image
-  };
+  // Vérifier si la session est terminée et envoyer les résultats
+  useEffect(() => {
+    if (sessionEnded && summary) {
+      console.log("Envoi du résumé :", summary);
+      sendEmail(summary, candidateEmail, sponsorEmail);
+    }
+  }, [summary, sessionEnded]);
 
-  // closing video streaming
-  const closeVideo = () => {
-    const url = videoRef.current.src;
-    videoRef.current.src = ""; // restore video source
-    URL.revokeObjectURL(url); // revoke url
-
-    setStreaming(null); // set streaming to null
-    inputVideoRef.current.value = ""; // reset input video
-    videoRef.current.style.display = "none"; // hide video
-  };
-
-  // opening front-facing camera
+  // Fonction d'ouverture de la caméra frontale
   const openFrontCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" }, // Use "user" to specify the front camera
+        video: { facingMode: "user" },
         audio: false,
       });
-      cameraRef.current.srcObject = stream; // Attach the stream to the camera element
-      cameraRef.current.style.display = "block"; // Show the camera
-      setStreaming("frontCamera"); // Update the streaming state
-      toggleSession(); // Start session logging
+      cameraRef.current.srcObject = stream;
+      cameraRef.current.style.display = "block";
+      setStreaming("frontCamera");
+      toggleSession();
+      setSessionEnded(false); // La session commence
     } catch (error) {
-      alert("Error accessing front camera: " + error.message);
+      alert("Erreur d'accès à la caméra : " + error.message);
     }
   };
 
-  // closing front-facing camera
+  // Fonction de fermeture de la caméra frontale et d'envoi des emails
   const closeFrontCamera = () => {
     const tracks = cameraRef.current.srcObject?.getTracks();
-    tracks?.forEach((track) => track.stop()); // Stop all tracks
-    cameraRef.current.srcObject = null; // Remove the video source
-    cameraRef.current.style.display = "none"; // Hide the camera
-    setStreaming(null); // Reset streaming state
-    toggleSession(); // Stop session logging and calculate summary
+    tracks?.forEach((track) => track.stop());
+    cameraRef.current.srcObject = null;
+    cameraRef.current.style.display = "none";
+    setStreaming(null);
+    toggleSession();
+    setSessionEnded(true);
+
+    // Simulation des résultats (à remplacer par de vraies données)
+    const sessionResults = "Résumé de la session..."; 
+    setSummary(sessionResults);
+  };
+
+  // Validation et ouverture de la caméra après la saisie des emails
+  const handleStartSession = () => {
+    if (!candidateEmail || !sponsorEmail) {
+      alert("Veuillez renseigner les adresses e-mail du candidat et du sponsor.");
+      return;
+    }
+    setShowModal(false);
+    openFrontCamera();
   };
 
   return (
     <div className="btn-container">
-      {/* Front Camera Handler */}
       <button
         onClick={() => {
           if (streaming === null || streaming !== "frontCamera") {
-            if (streaming === "camera") webcam.close(cameraRef.current);
-            openFrontCamera(); // Open front-facing camera
+            setShowModal(true);
           } else {
-            closeFrontCamera(); // Close front-facing camera
+            closeFrontCamera();
           }
         }}
       >
-        {streaming === "frontCamera" ? "Close The Session" : "Start The Session"}
+        {streaming === "frontCamera" ? "Fermer la session" : "Démarrer la session"}
       </button>
+
+      {/* Modal pour saisir les emails avant la session */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Informations de la session</h2>
+            <input
+              type="email"
+              placeholder="Email du candidat"
+              value={candidateEmail}
+              onChange={(e) => setCandidateEmail(e.target.value)}
+              required
+            />
+            <input
+              type="email"
+              placeholder="Email du sponsor"
+              value={sponsorEmail}
+              onChange={(e) => setSponsorEmail(e.target.value)}
+              required
+            />
+            <button onClick={handleStartSession}>Démarrer la session</button>
+            <button onClick={() => setShowModal(false)}>Annuler</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
