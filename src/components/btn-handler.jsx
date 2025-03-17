@@ -13,6 +13,7 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
   const [candidateEmail, setCandidateEmail] = useState("");
   const [sponsorEmail, setSponsorEmail] = useState("");
   const [sessionEnded, setSessionEnded] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   // Check if the session has ended and send the results
   useEffect(() => {
@@ -56,6 +57,10 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
       alert("Please enter the candidate's and sponsor's email addresses.");
       return;
     }
+    if (!termsAccepted) {
+      alert("Please accept the Terms of Use before starting the session.");
+      return;
+    }
     setShowModal(false);
     openFrontCamera();
   };
@@ -93,6 +98,17 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
               onChange={(e) => setSponsorEmail(e.target.value)}
               required
             />
+            <div className="terms-container">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={termsAccepted}
+                onChange={() => setTermsAccepted(!termsAccepted)}
+              />
+              <label htmlFor="terms">
+                I accept the <a href="https://www.google.fr" target="_blank" rel="noopener noreferrer">Terms of Use</a>.
+              </label>
+            </div>
             <button onClick={handleStartSession}>Start the session</button>
             <button onClick={() => setShowModal(false)}>Cancel</button>
           </div>
