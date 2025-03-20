@@ -1,8 +1,6 @@
-/// vite.config.js
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   test: {
@@ -11,7 +9,10 @@ export default defineConfig({
     setupFiles: "./src/setupTests.js",
   },
   build: {
-    outDir: "docs", // Set output directory to docs/ for GitHub Pages deployment
+    outDir: "docs", // Met le build dans docs/ pour GitHub Pages
+    rollupOptions: {
+      input: "index.html", // Assure que le bon fichier index.html est pris
+    }
   },
-  base: "./", // Ensures correct asset loading on GitHub Pages
+  base: "./", // Assure le bon chargement des assets sur GitHub Pages
 });
