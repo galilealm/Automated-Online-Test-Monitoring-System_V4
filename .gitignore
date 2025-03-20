@@ -1,11 +1,11 @@
-# Ignore all files
-*
+# # Ignore all files
+# *
 
-# Except for these files
-!src/utils/emailService.js
-!src/components/btn-handler.jsx
-!yarn.lock
-!src/App.jsx
+# # Except for these files
+# !src/utils/emailService.js
+# !src/components/btn-handler.jsx
+# !yarn.lock
+# !src/App.jsx
 
-# Ignore node_modules
-node_modules
+# # Ignore node_modules
+# node_modules
