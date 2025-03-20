@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d dist",
+    "deploy": "email-version -d dist",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Eian-IRCA/Web-app.git"
+    "url": "git+https://fefe29.github.io/Automated-Online-Test-Monitoring-System_V4/"
   },
   "keywords": [
     "object detection",
@@ -21,7 +21,7 @@
     "react",
     "tensorflow.js"
   ],
-  "author": "Mohsen",
+  "author": "Mohsen, Katya, Galiléa, Félicien",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Eian-IRCA/Web-app/issues"
