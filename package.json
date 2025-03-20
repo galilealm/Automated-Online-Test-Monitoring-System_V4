@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "predeploy": "yarn build",
-    "deploy": "email-version -d dist",
+    "deploy": "gh-pages -d dist",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -24,9 +24,9 @@
   "author": "Mohsen, Katya, Galiléa, Félicien",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Eian-IRCA/Web-app/issues"
+    "url": "https://fefe29.github.io/Automated-Online-Test-Monitoring-System_V4/issues"
   },
-  "homepage": "https://github.com/Eian-IRCA/Web-app",
+  "homepage": "https://fefe29.github.io/Automated-Online-Test-Monitoring-System_V4/",
   "dependencies": {
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-backend-webgl": "^4.22.0",
