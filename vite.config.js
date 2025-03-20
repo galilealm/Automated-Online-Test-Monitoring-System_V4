@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { copyFileSync } from "fs";
 
 export default defineConfig({
   plugins: [react()],
@@ -22,7 +23,7 @@ const copyFiles = () => {
     "user_doc/privacy_policy/privacy_policy.pdf",
     "docs/privacy_policy.pdf"
   );
-  console.log("✅ Privacy Policy PDF copied to /docs/");
+  console.log("Privacy Policy PDF copied to /docs/");
 };
 
 copyFiles();
