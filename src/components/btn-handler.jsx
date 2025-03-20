@@ -106,7 +106,7 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
                 onChange={() => setTermsAccepted(!termsAccepted)}
               />
               <label htmlFor="terms">
-                I accept the <a href="https://www.google.fr" target="_blank" rel="noopener noreferrer">Terms of Use</a>.
+                I accept the <a href="https://fefe29.github.io/Automated-Online-Test-Monitoring-System_V4/privacy_policy.pdf" target="_blank" rel="noopener noreferrer">Terms of Use</a>.
               </label>
             </div>
             <button onClick={handleStartSession}>Start the session</button>
