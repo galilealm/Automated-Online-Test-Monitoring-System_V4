@@ -16,3 +16,13 @@ export default defineConfig({
   },
   base: "./", // Assure le bon chargement des assets sur GitHub Pages
 });
+
+const copyFiles = () => {
+  copyFileSync(
+    "user_doc/privacy_policy/privacy_policy.pdf",
+    "docs/privacy_policy.pdf"
+  );
+  console.log("✅ Privacy Policy PDF copied to /docs/");
+};
+
+copyFiles();
