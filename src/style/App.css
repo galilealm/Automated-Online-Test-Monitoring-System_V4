@@ -122,6 +122,14 @@ button:hover {
   margin: auto;
 }
 
+/* Email Error Text */
+.error-text {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
 /* Loading Text */
 .loading-text {
   font-weight: bold;
