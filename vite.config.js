@@ -23,7 +23,12 @@ const copyFiles = () => {
     "user_doc/privacy_policy/privacy_policy.pdf",
     "docs/privacy_policy.pdf"
   );
-  console.log("Privacy Policy PDF copied to /docs/");
+  copyFileSync(
+    "user_doc/user_doc.pdf",
+    "docs/user_doc.pdf"
+  );
+
+  console.log("PDF copied to /docs/");
 };
 
 copyFiles();
