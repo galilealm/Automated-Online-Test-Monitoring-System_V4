@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "predeploy": "yarn build",
+    "postbuild": "node copy-assets.js",
     "deploy": "yarn build && git add docs && git commit -m 'Deploy new version' && git push origin email_version",
     "start": "vite",
     "build": "vite build",
