@@ -2,7 +2,6 @@
   "name": "web-app",
   "description": "Object detection application right in your browser using YOLOv8 and Tensorflow.js",
   "version": "1.0.0",
-
   "scripts": {
     "predeploy": "yarn build && node copy-assets.js",
     "deploy": "yarn build && node copy-assets.js && git add docs && git commit -m 'Deploy new version' && git push origin email_version",
