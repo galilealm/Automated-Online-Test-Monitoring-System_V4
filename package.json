@@ -5,7 +5,7 @@
 
   "scripts": {
     "predeploy": "yarn build && node copy-assets.js",
-    "deploy": "gh-pages -d docs",
+    "deploy": "yarn build && node copy-assets.js && git add docs && git commit -m 'Deploy new version' && git push origin email_version",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
