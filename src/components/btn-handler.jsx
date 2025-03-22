@@ -117,7 +117,7 @@ const ButtonHandler = ({ imageRef, cameraRef, videoRef, toggleSession, sessionAc
 
       {/* "Powered by YOLO" and First-time User Information */}
       <div className="footer-info">
-        <p>First use? Check our user guide: <a href="https://fefe29.github.io/Automated-Online-Test-Monitoring-System_V4/user_doc.pdf" target="_blank" rel="noopener noreferrer">User guide</a></p>
+        <p>First use? Check our <a href="https://fefe29.github.io/Automated-Online-Test-Monitoring-System_V4/user_doc.pdf" target="_blank" rel="noopener noreferrer">user guide</a></p>
       </div>
     </div>
   );
