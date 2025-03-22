@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { copyFileSync } from "fs";
 
 export default defineConfig({
   plugins: [react()],
@@ -18,17 +17,3 @@ export default defineConfig({
   base: "./", // Assure le bon chargement des assets sur GitHub Pages
 });
 
-const copyFiles = () => {
-  copyFileSync(
-    "user_doc/privacy_policy/privacy_policy.pdf",
-    "docs/privacy_policy.pdf"
-  );
-  copyFileSync(
-    "user_doc/user_doc.pdf",
-    "docs/user_doc.pdf"
-  );
-
-  console.log("PDF copied to /docs/");
-};
-
-copyFiles();

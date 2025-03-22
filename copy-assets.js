@@ -1,5 +1,6 @@
 // copy-assets.js
-import fs from "fs";
+const fs = require("fs");
+const path = require("path");
 
 const filesToCopy = [
   {
@@ -9,10 +10,14 @@ const filesToCopy = [
   {
     from: "user_doc/user_doc.pdf",
     to: "docs/user_doc.pdf",
-  }
+  },
 ];
 
 filesToCopy.forEach(({ from, to }) => {
-  fs.copyFileSync(from, to);
-  console.log(`Copied ${from} → ${to}`);
+  try {
+    fs.copyFileSync(from, to);
+    console.log(`Copied ${from} → ${to}`);
+  } catch (error) {
+    console.error(`Failed to copy ${from} → ${to}`, error);
+  }
 });
