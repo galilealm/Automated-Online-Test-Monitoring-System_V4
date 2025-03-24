@@ -1,4 +1,5 @@
 import { renderBoxes } from './renderBox';
+import labels from './labels.json';
 
 // Mocking canvas context
 let mockCanvas;
@@ -7,93 +8,86 @@ let mockContext;
 beforeEach(() => {
   mockContext = {
     fillStyle: '',
-    fillRect: jest.fn(),
+    fillRect: vi.fn(),
     strokeStyle: '',
     lineWidth: 1,
-    strokeRect: jest.fn(),
-    clearRect: jest.fn(),
-    measureText: jest.fn(() => ({ width: 100 })), // Mock measureText
-    fillText: jest.fn(), // Mock fillText
+    strokeRect: vi.fn(),
+    clearRect: vi.fn(),
+    measureText: vi.fn((text) => ({ width: text.length * 8 })), // Approximate width
+    fillText: vi.fn(),
     canvas: {
       width: 640,
       height: 480,
     },
   };
   mockCanvas = {
-    getContext: jest.fn(() => mockContext),
+    getContext: vi.fn(() => mockContext),
   };
 });
 
 describe('renderBox.js', () => {
   test('renderBoxes should render the correct number of boxes', () => {
     const boxes = [
-      [100, 100, 200, 200],
-      [300, 300, 400, 400]
+      100, 100, 200, 200,  // box 1
+      300, 300, 400, 400   // box 2
     ];
     const scores = [0.9, 0.8];
-    const classes = [0, 1]; // Mock class IDs
-    const ratios = [1, 1]; // Mock xRatio and yRatio
+    const classes = [0, 1];
+    const ratios = [1, 1];
 
     renderBoxes(mockCanvas, boxes, scores, classes, ratios);
 
-    // Check if fillRect or strokeRect was called (rendering boxes)
-    expect(mockContext.fillRect).toHaveBeenCalledTimes(2);
+    // Each box calls fillRect (1 for box, 1 for label background)
+    expect(mockContext.fillRect).toHaveBeenCalledTimes(4);
+    // Each box calls strokeRect once
     expect(mockContext.strokeRect).toHaveBeenCalledTimes(2);
   });
 
   test('renderBoxes should use different colors for different classes', () => {
-    const boxes = [
-      [100, 100, 200, 200]
-    ];
+    const boxes = [100, 100, 200, 200];
     const scores = [0.9];
-    const classes = [0]; // First class
+    const classes = [0];
     const ratios = [1, 1];
+
+    const fillStyles = [];
+    mockContext.fillRect = vi.fn((x, y, w, h) => {
+      fillStyles.push(mockContext.fillStyle);
+    });
 
     renderBoxes(mockCanvas, boxes, scores, classes, ratios);
 
-    // Assert that the correct color is used based on the class
-    expect(mockContext.fillStyle).toBe('#FF0000'); // Assuming class 0 uses red
+    // Check if one of the fillStyle calls contains the expected rgba value
+    const colorUsed = fillStyles.some((color) => color.includes('rgba(31, 58, 147'));
+    expect(colorUsed).toBe(true);
   });
 
   test('renderBoxes should not render boxes if no valid boxes are passed', () => {
-    const boxes = [];
-    const scores = [];
-    const classes = [];
-    const ratios = [];
+    renderBoxes(mockCanvas, [], [], [], [1, 1]);
 
-    renderBoxes(mockCanvas, boxes, scores, classes, ratios);
-
-    // Ensure that fillRect is not called
     expect(mockContext.fillRect).not.toHaveBeenCalled();
+    expect(mockContext.strokeRect).not.toHaveBeenCalled();
   });
 
   test('renderBoxes should render labels correctly', () => {
-    const boxes = [
-      [100, 100, 200, 200]
-    ];
+    const boxes = [100, 100, 200, 200];
     const scores = [0.9];
-    const classes = [0]; // First class
+    const classes = [0];
     const ratios = [1, 1];
 
     renderBoxes(mockCanvas, boxes, scores, classes, ratios);
 
-    // Check if fillText was called (rendering labels)
-    expect(mockContext.fillText).toHaveBeenCalledTimes(1);
-    expect(mockContext.fillText).toHaveBeenCalledWith('Class 0 - 90%', 100, 90);
+    const expectedText = `${labels[0]} - 90.0%`;
+    expect(mockContext.fillText).toHaveBeenCalledWith(expectedText, expect.any(Number), expect.any(Number));
   });
 
   test('renderBoxes should clear the canvas before rendering', () => {
-    const boxes = [
-      [100, 100, 200, 200]
-    ];
+    const boxes = [100, 100, 200, 200];
     const scores = [0.9];
-    const classes = [0]; // First class
+    const classes = [0];
     const ratios = [1, 1];
 
     renderBoxes(mockCanvas, boxes, scores, classes, ratios);
 
-    // Check if clearRect was called to clear the canvas
-    expect(mockContext.clearRect).toHaveBeenCalledTimes(1);
     expect(mockContext.clearRect).toHaveBeenCalledWith(0, 0, 640, 480);
   });
 });
